@@ -1,3 +1,5 @@
+"""Main Tkinter application for the expense tracker."""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 

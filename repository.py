@@ -1,3 +1,5 @@
+"""Database access layer for the expense tracker (SQLite + CRUD)."""
+
 import sqlite3
 
 DB_NAME = "expenses.db"

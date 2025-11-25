@@ -1,3 +1,5 @@
+"""Tkinter Toplevel form for adding and editing expenses."""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime

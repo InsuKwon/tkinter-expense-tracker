@@ -1,3 +1,6 @@
+"""Dashboard window for summary stats and category breakdown."""
+
+
 import tkinter as tk
 from tkinter import ttk
 

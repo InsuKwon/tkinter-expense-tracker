@@ -197,14 +197,14 @@ class ExpenseRepository:
             return cur.fetchall()
 
     def get_recent_expenses(self, limit=15):
-        """Get the most recent expenses ordered chronologically (oldest first)."""
+        """Get the most recent expenses ordered by date (most recent first)."""
         with self._get_conn() as conn:
             cur = conn.cursor()
             cur.execute(
                 """
                 SELECT date, category, description, amount
                 FROM expenses
-                ORDER BY date ASC
+                ORDER BY date DESC, id DESC
                 LIMIT ?
                 """,
                 (limit,),

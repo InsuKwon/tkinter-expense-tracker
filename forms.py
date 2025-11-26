@@ -45,8 +45,8 @@ class ExpenseForm(tk.Toplevel):
 
         tk.Entry(self, textvariable=self.date_var).grid(row=0, column=1, padx=5, pady=5)
         
-        # Category Combobox
-        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=self.category_options)
+        # Category Combobox (readonly to ensure data consistency)
+        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=self.category_options, state='readonly')
         self.category_combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.desc_text = tk.Text(self, width=30, height=4)
@@ -54,8 +54,8 @@ class ExpenseForm(tk.Toplevel):
 
         tk.Entry(self, textvariable=self.amount_var).grid(row=3, column=1, padx=5, pady=5)
         
-        # Payment Method Combobox
-        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=self.payment_options)
+        # Payment Method Combobox (readonly to ensure data consistency)
+        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=self.payment_options, state='readonly')
         self.payment_combo.grid(row=4, column=1, padx=5, pady=5)
 
         self.comments_text = tk.Text(self, width=30, height=3)

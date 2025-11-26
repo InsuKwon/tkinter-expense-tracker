@@ -93,9 +93,15 @@ class DashboardWindow(tk.Toplevel):
         columns = ('Date', 'Category', 'Description', 'Amount')
         self.recent_tree = ttk.Treeview(recent_frame, columns=columns, show='headings', height=8)
 
-        for col in columns:
-            self.recent_tree.heading(col, text=col)
-            self.recent_tree.column(col, width=150)
+        # Configure column widths appropriately for each type
+        self.recent_tree.heading('Date', text='Date')
+        self.recent_tree.column('Date', width=100)
+        self.recent_tree.heading('Category', text='Category')
+        self.recent_tree.column('Category', width=120)
+        self.recent_tree.heading('Description', text='Description')
+        self.recent_tree.column('Description', width=200)
+        self.recent_tree.heading('Amount', text='Amount')
+        self.recent_tree.column('Amount', width=100)
 
         # Add scrollbar
         scrollbar = ttk.Scrollbar(recent_frame, orient='vertical', command=self.recent_tree.yview)
@@ -265,13 +271,14 @@ class DashboardWindow(tk.Toplevel):
         self.ax4.clear()
 
         # Chart 1: Category Pie Chart (Top 5 + Other)
+        MAX_PIE_CHART_CATEGORIES = 5
         if categories:
-            # Limit to top 5 categories, group the rest into "Other"
-            if len(categories) > 5:
-                top_5 = categories[:5]
-                other_total = sum(cat[1] for cat in categories[5:])
-                cat_names = [cat[0] for cat in top_5] + ['Other']
-                cat_values = [cat[1] for cat in top_5] + [other_total]
+            # Limit to top categories, group the rest into "Other"
+            if len(categories) > MAX_PIE_CHART_CATEGORIES:
+                top_categories = categories[:MAX_PIE_CHART_CATEGORIES]
+                other_total = sum(cat[1] for cat in categories[MAX_PIE_CHART_CATEGORIES:])
+                cat_names = [cat[0] for cat in top_categories] + ['Other']
+                cat_values = [cat[1] for cat in top_categories] + [other_total]
             else:
                 cat_names = [cat[0] for cat in categories]
                 cat_values = [cat[1] for cat in categories]

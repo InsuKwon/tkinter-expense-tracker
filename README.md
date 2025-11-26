@@ -1,110 +1,68 @@
-# Tkinter Expense Tracker  
-CCT211H5F – Project 2: Persistent Form  
+# Tkinter Expense Tracker
 
-## Group Members  
-- Insu Kwon  
-- Rooney 
+A persistent form application for tracking personal expenses built with Python's Tkinter GUI framework and SQLite database.
 
----
+## Description
 
-## Overview  
-This application is a Tkinter-based **expense tracker** built for the final project of **CCT211H5F – Python Programming**.  
-It demonstrates:
+This application is a Tkinter-based **expense tracker** that provides a simple and intuitive interface for managing personal finances. It demonstrates persistent data storage, multi-window GUI design, and data visualization capabilities.
 
-- CRUD operations  
-- SQLite data persistence  
-- Multi-window GUI design  
-- Error handling and validation  
-- Object-oriented code organization  
-- Dashboard summary using a separate window  
+Users can add, edit, delete, and view expenses. The dashboard provides comprehensive analytics and visualizations of spending patterns.
 
-Users can add, edit, delete, and view expenses. The dashboard provides a quick summary of spending patterns.
+## Installation
 
----
+**Requirements:**
+- Python 3.10+
+- Tkinter (included with Python)
+- SQLite (included with Python)
+- Matplotlib (for charts)
 
-## Features  
+**Install dependencies:**
+```bash
+pip install matplotlib
+```
 
-### CRUD Expense Management  
-- Add new expenses  
-- Edit existing entries  
-- Delete entries  
-- View expenses in a table using `ttk.Treeview`
+## Execution
 
-### Data Validation  
-- Required fields (date, category, amount)  
-- Date format validation (`YYYY-MM-DD`)  
-- Numeric + positive amount check  
-- Optional description limits  
-
-### SQLite Persistence  
-- Automatic creation of `expenses.db`  
-- Stores all data permanently  
-- Database logic isolated in `repository.py`  
-
-### Multi-Window Tkinter Interface  
-- **Main window:** view and manage expenses  
-- **Form window:** add/edit expenses (`forms.py`)  
-- **Dashboard window:** summary statistics (`dashboard.py`)  
-
-### Dashboard Summary  
-- Total amount spent  
-- Number of expenses  
-- Average expense  
-- Spending by category  
-- Top 5 largest expenses  
-
----
-
-## Project Structure  
-
-/tkinter-expense-tracker
-│
-├── main.py # Main GUI (treeview, menu, buttons)
-├── repository.py # SQLite database CRUD operations
-├── forms.py # Add/Edit expense form (Toplevel)
-├── dashboard.py # Dashboard summary and category breakdown
-├── .gitignore
-└── README.md
-
----
-
-## How to Run  
-
-**Requirements:**  
-- Python 3.10+  
-- Tkinter (included with Python)  
-- SQLite (included with Python)  
-
-````
 Run the application:
-````
-
-bash
+```bash
 python main.py
+```
 
 Running the program will automatically:
-Create expenses.db if it does not exist
-Launch the main Tkinter interface 
+- Create `expenses.db` if it does not exist
+- Launch the main Tkinter interface
 
-## Testing
+## Features
 
-- Manually tested for:
-- Valid/invalid date inputs
-- Numeric amount and negative amount prevention
-- Adding, editing, deleting expenses
-- Dashboard accuracy
-- Multi-window flow
+### Dashboard
+- Overview with summary cards (Total Spent, Number of Expenses, Average, Top Category)
+- Quick insights and recent activity
+- Analytics with charts and visualizations
 
-## Division of Work
-Insu:
-- SQLite database setup
-- CRUD logic (repository.py)
-- Data validation
-- Code organization and file structure
-- Documentation and Git commits
+### CRUD Operations
+- Add new expenses with categories and payment methods
+- Edit existing entries
+- Delete entries
+- View expenses in a table using `ttk.Treeview`
 
-Rooney:
-- GUI layout and styling
-- Dashboard design
-- Visual hierarchy improvements
-- User experience enhancements
+### Analytics
+- Spending by category (Pie chart - top 5 + Other)
+- Monthly spending trends (chronological)
+- Category breakdown analysis
+- Transaction volume statistics
+
+## Project Structure
+
+```
+/tkinter-expense-tracker
+├── main.py           # Main GUI (treeview, menu, buttons)
+├── repository.py     # SQLite database CRUD operations
+├── forms.py          # Add/Edit expense form (Toplevel)
+├── dashboard.py      # Dashboard summary and category breakdown
+├── .gitignore
+└── README.md
+```
+
+## Group Members
+- Insu Kwon
+- Rooney

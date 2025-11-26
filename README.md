@@ -16,19 +16,25 @@ It demonstrates:
 - Multi-window GUI design  
 - Error handling and validation  
 - Object-oriented code organization  
-- Dashboard summary using a separate window  
+- Dashboard with interactive Matplotlib charts
+- Dropdown selection for categories and payment methods
 
-Users can add, edit, delete, and view expenses. The dashboard provides a quick summary of spending patterns.
+Users can add, edit, delete, and view expenses. The dashboard provides comprehensive analytics with pie charts, bar charts, and monthly spending trends.
 
 ---
 
 ## Features  
 
 ### CRUD Expense Management  
-- Add new expenses  
+- Add new expenses with dropdown category and payment method selection
 - Edit existing entries  
 - Delete entries  
 - View expenses in a table using `ttk.Treeview`
+
+### Category & Payment Selection
+- Pre-defined category options: Food, Transport, Shopping, Entertainment, Rent, Other
+- Pre-defined payment methods: Cash, Credit Card, Debit Card, Other
+- Dropdown selection using `ttk.Combobox` for consistent data entry
 
 ### Data Validation  
 - Required fields (date, category, amount)  
@@ -43,28 +49,38 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 
 ### Multi-Window Tkinter Interface  
 - **Main window:** view and manage expenses  
-- **Form window:** add/edit expenses (`forms.py`)  
-- **Dashboard window:** summary statistics (`dashboard.py`)  
+- **Form window:** add/edit expenses with dropdowns (`forms.py`)  
+- **Dashboard window:** analytics and visualizations (`dashboard.py`)  
 
-### Dashboard Summary  
+### Dashboard Analytics  
 - Total amount spent  
 - Number of expenses  
 - Average expense  
-- Spending by category  
-- Top 5 largest expenses  
+- Top spending category
+- Recent activity (last 15 expenses, chronologically sorted)
+- Quick insights with spending trend analysis
+
+### Interactive Charts (Matplotlib)
+- **Spending by Category (Pie Chart):** Top 5 categories with "Other" aggregation
+- **Top Spending Categories (Bar Chart):** Visual comparison of top 5 categories
+- **Monthly Spending Trend (Line Chart):** Chronological view (oldest to newest)
+- **Transaction Volume (Bar Chart):** Number of transactions per category
 
 ---
 
 ## Project Structure  
 
+```
 /tkinter-expense-tracker
 │
-├── main.py # Main GUI (treeview, menu, buttons)
-├── repository.py # SQLite database CRUD operations
-├── forms.py # Add/Edit expense form (Toplevel)
-├── dashboard.py # Dashboard summary and category breakdown
+├── main.py           # Main GUI (treeview, menu, buttons)
+├── repository.py     # SQLite database CRUD operations
+├── forms.py          # Add/Edit expense form with Comboboxes
+├── dashboard.py      # Dashboard with Matplotlib charts
+├── expenses.db       # SQLite database (auto-created)
 ├── .gitignore
 └── README.md
+```
 
 ---
 
@@ -74,37 +90,44 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 - Python 3.10+  
 - Tkinter (included with Python)  
 - SQLite (included with Python)  
+- Matplotlib (`pip install matplotlib`)
 
-````
-Run the application:
-````
+```bash
+# Install matplotlib if not already installed
+pip install matplotlib
 
-bash
+# Run the application
 python main.py
+```
 
 Running the program will automatically:
-Create expenses.db if it does not exist
-Launch the main Tkinter interface 
+- Create `expenses.db` if it does not exist
+- Launch the main Tkinter interface 
+
+---
 
 ## Testing
 
 - Manually tested for:
-- Valid/invalid date inputs
-- Numeric amount and negative amount prevention
-- Adding, editing, deleting expenses
-- Dashboard accuracy
-- Multi-window flow
+  - Valid/invalid date inputs
+  - Numeric amount and negative amount prevention
+  - Adding, editing, deleting expenses
+  - Dashboard chart accuracy
+  - Dropdown selection functionality
+  - Multi-window flow
+
+---
 
 ## Division of Work
-Insu:
+**Insu:**
 - SQLite database setup
 - CRUD logic (repository.py)
 - Data validation
 - Code organization and file structure
 - Documentation and Git commits
 
-Rooney:
+**Rooney:**
 - GUI layout and styling
-- Dashboard design
+- Dashboard design with Matplotlib charts
 - Visual hierarchy improvements
 - User experience enhancements

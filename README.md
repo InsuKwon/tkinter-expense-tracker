@@ -17,8 +17,14 @@ It demonstrates:
 - Error handling and validation  
 - Object-oriented code organization  
 - Dashboard summary using a separate window  
+- **Matplotlib analytics** for visual spending insights
 
 Users can add, edit, delete, and view expenses. The dashboard provides a quick summary of spending patterns.
+
+### Key Technologies
+- **Tkinter GUI** - Modern, multi-window interface with ttk widgets
+- **SQLite Persistence** - Automatic database creation and management
+- **Matplotlib Analytics** - Interactive charts including pie charts and trend graphs
 
 ---
 
@@ -50,8 +56,9 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 - Total amount spent  
 - Number of expenses  
 - Average expense  
-- Spending by category  
-- Top 5 largest expenses  
+- Spending by category (pie chart with top 5 + "Other")
+- Monthly spending trends (chronological chart)
+- Recent activity list (sorted by date)  
 
 ---
 
@@ -74,6 +81,7 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 - Python 3.10+  
 - Tkinter (included with Python)  
 - SQLite (included with Python)  
+- Matplotlib (`pip install matplotlib`)  
 
 ````
 Run the application:

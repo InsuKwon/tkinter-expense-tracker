@@ -78,13 +78,17 @@ class DashboardWindow(tk.Toplevel):
                                      font=('Arial', 10), bg='#f8f9fa')
         self.insights_text.pack(fill='x', padx=5, pady=5)
 
-        # Recent activity frame
-        recent_frame = tk.LabelFrame(self.overview_frame, text="Recent High-Value Expenses",
-                                     font=('Arial', 12, 'bold'), bg='white')
+        # Recent activity frame - using Frame with solid grey border instead of LabelFrame
+        recent_frame = tk.Frame(self.overview_frame, bg='white', highlightbackground='grey',
+                                highlightthickness=1, bd=0)
         recent_frame.pack(fill='both', expand=True, padx=10, pady=5)
 
-        # Create treeview for recent expenses
-        columns = ('Date', 'Category', 'Description', 'Amount', 'Comments')
+        # Add title label for the frame
+        recent_title = tk.Label(recent_frame, text="Recent Activity", font=('Arial', 12, 'bold'), bg='white')
+        recent_title.pack(anchor='w', padx=5, pady=5)
+
+        # Create treeview for recent expenses - removed 'Comments' column
+        columns = ('Date', 'Category', 'Description', 'Amount')
         self.recent_tree = ttk.Treeview(recent_frame, columns=columns, show='headings', height=8)
 
         for col in columns:
@@ -247,11 +251,10 @@ class DashboardWindow(tk.Toplevel):
         for row in self.recent_tree.get_children():
             self.recent_tree.delete(row)
 
-        for date, cat, desc, amount in self.repo.get_top_expenses(10):
-            # Get comments for this expense
-            comments = "View in main table"
+        # Use get_recent_expenses which sorts by date (chronological order)
+        for date, cat, desc, amount in self.repo.get_recent_expenses(10):
             self.recent_tree.insert('', 'end', values=(date, cat, desc[:30] + '...' if len(desc) > 30 else desc,
-                                                       f"${amount:.2f}", comments))
+                                                       f"${amount:.2f}"))
 
     def _update_charts(self, categories):
         # Clear all axes
@@ -260,10 +263,20 @@ class DashboardWindow(tk.Toplevel):
         self.ax3.clear()
         self.ax4.clear()
 
-        # Chart 1: Category Pie Chart
+        # Chart 1: Category Pie Chart - Limited to top 5 categories + "Other"
         if categories:
-            cat_names = [cat[0] for cat in categories]
-            cat_values = [cat[1] for cat in categories]
+            if len(categories) > 5:
+                # Top 5 categories
+                top_5 = categories[:5]
+                cat_names = [cat[0] for cat in top_5]
+                cat_values = [cat[1] for cat in top_5]
+                # Group remaining categories into "Other"
+                other_total = sum(cat[1] for cat in categories[5:])
+                cat_names.append('Other')
+                cat_values.append(other_total)
+            else:
+                cat_names = [cat[0] for cat in categories]
+                cat_values = [cat[1] for cat in categories]
 
             self.ax1.pie(cat_values, labels=cat_names, autopct='%1.1f%%', startangle=90)
             self.ax1.set_title('Spending by Category', fontweight='bold')
@@ -279,11 +292,13 @@ class DashboardWindow(tk.Toplevel):
             self.ax2.set_ylabel('Amount ($)')
             self.ax2.tick_params(axis='x', rotation=45)
 
-        # Chart 3: Monthly Trends
+        # Chart 3: Monthly Trends - sorted chronologically (oldest left, newest right)
         monthly_data = self.repo.get_monthly_spending()
         if monthly_data:
-            months = [m[0] for m in monthly_data]
-            values = [m[1] for m in monthly_data]
+            # Reverse to get chronological order (oldest to newest)
+            monthly_data_sorted = list(reversed(monthly_data))
+            months = [m[0] for m in monthly_data_sorted]
+            values = [m[1] for m in monthly_data_sorted]
 
             self.ax3.plot(months, values, marker='o', linewidth=2, markersize=6)
             self.ax3.set_title('Monthly Spending Trend', fontweight='bold')

@@ -195,3 +195,18 @@ class ExpenseRepository:
                 (f'%{tag}%',)
             )
             return cur.fetchall()
+
+    def get_recent_expenses(self, limit=10):
+        """Fetch expenses sorted by date DESC (newest first) to support dashboard requirements."""
+        with self._get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT date, category, description, amount
+                FROM expenses
+                ORDER BY date DESC, id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            )
+            return cur.fetchall()

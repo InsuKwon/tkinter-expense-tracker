@@ -24,6 +24,11 @@ class ExpenseForm(tk.Toplevel):
     def _build_widgets(self):
         self.resizable(False, False)
 
+        # Category options
+        self.category_options = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Rent', 'Other']
+        # Payment method options
+        self.payment_options = ['Credit Card', 'Debit Card', 'Cash', 'E-Transfer', 'Other']
+
         tk.Label(self, text="Date (YYYY-MM-DD):").grid(row=0, column=0, sticky="e", padx=5, pady=5)
         tk.Label(self, text="Category:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
         tk.Label(self, text="Description / Notes:").grid(row=2, column=0, sticky="ne", padx=5, pady=5)
@@ -39,13 +44,19 @@ class ExpenseForm(tk.Toplevel):
         self.tags_var = tk.StringVar()
 
         tk.Entry(self, textvariable=self.date_var).grid(row=0, column=1, padx=5, pady=5)
-        tk.Entry(self, textvariable=self.category_var).grid(row=1, column=1, padx=5, pady=5)
+
+        # Category Combobox
+        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=self.category_options, state='readonly')
+        self.category_combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.desc_text = tk.Text(self, width=30, height=4)
         self.desc_text.grid(row=2, column=1, padx=5, pady=5)
 
         tk.Entry(self, textvariable=self.amount_var).grid(row=3, column=1, padx=5, pady=5)
-        tk.Entry(self, textvariable=self.payment_var).grid(row=4, column=1, padx=5, pady=5)
+
+        # Payment Method Combobox
+        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=self.payment_options, state='readonly')
+        self.payment_combo.grid(row=4, column=1, padx=5, pady=5)
 
         self.comments_text = tk.Text(self, width=30, height=3)
         self.comments_text.grid(row=5, column=1, padx=5, pady=5)
@@ -70,10 +81,26 @@ class ExpenseForm(tk.Toplevel):
                 tags = None
 
             self.date_var.set(date)
-            self.category_var.set(category)
+
+            # Handle category - if the value exists in options, select it; otherwise add it temporarily
+            if category in self.category_options:
+                self.category_var.set(category)
+            else:
+                # Add the existing category to options temporarily for editing
+                self.category_combo['values'] = self.category_options + [category]
+                self.category_var.set(category)
+
             self.desc_text.insert("1.0", description or "")
             self.amount_var.set(str(amount))
-            self.payment_var.set(payment or "")
+
+            # Handle payment method - if the value exists in options, select it; otherwise add it temporarily
+            if payment in self.payment_options:
+                self.payment_var.set(payment or "")
+            else:
+                # Add the existing payment method to options temporarily for editing
+                self.payment_combo['values'] = self.payment_options + [payment]
+                self.payment_var.set(payment or "")
+
             self.comments_text.insert("1.0", comments or "")
             self.tags_var.set(tags or "")
         else:

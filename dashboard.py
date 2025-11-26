@@ -78,18 +78,25 @@ class DashboardWindow(tk.Toplevel):
                                      font=('Arial', 10), bg='#f8f9fa')
         self.insights_text.pack(fill='x', padx=5, pady=5)
 
-        # Recent activity frame
-        recent_frame = tk.LabelFrame(self.overview_frame, text="Recent High-Value Expenses",
-                                     font=('Arial', 12, 'bold'), bg='white')
-        recent_frame.pack(fill='both', expand=True, padx=10, pady=5)
+        # Recent activity frame - using Frame with solid grey border
+        recent_container = tk.Frame(self.overview_frame, bg='white')
+        recent_container.pack(fill='both', expand=True, padx=10, pady=5)
 
-        # Create treeview for recent expenses
-        columns = ('Date', 'Category', 'Description', 'Amount', 'Comments')
+        # Title label for the recent activity section
+        recent_title = tk.Label(recent_container, text="Recent Activity",
+                                font=('Arial', 12, 'bold'), bg='white', anchor='w')
+        recent_title.pack(fill='x', padx=5, pady=(5, 0))
+
+        recent_frame = tk.Frame(recent_container, bd=1, relief='solid', bg='white')
+        recent_frame.pack(fill='both', expand=True, padx=5, pady=5)
+
+        # Create treeview for recent expenses - removed Comments column
+        columns = ('Date', 'Category', 'Description', 'Amount')
         self.recent_tree = ttk.Treeview(recent_frame, columns=columns, show='headings', height=8)
 
         for col in columns:
             self.recent_tree.heading(col, text=col)
-            self.recent_tree.column(col, width=120)
+            self.recent_tree.column(col, width=150)
 
         # Add scrollbar
         scrollbar = ttk.Scrollbar(recent_frame, orient='vertical', command=self.recent_tree.yview)
@@ -247,11 +254,10 @@ class DashboardWindow(tk.Toplevel):
         for row in self.recent_tree.get_children():
             self.recent_tree.delete(row)
 
-        for date, cat, desc, amount in self.repo.get_top_expenses(10):
-            # Get comments for this expense
-            comments = "View in main table"
-            self.recent_tree.insert('', 'end', values=(date, cat, desc[:30] + '...' if len(desc) > 30 else desc,
-                                                       f"${amount:.2f}", comments))
+        # Use get_recent_expenses which is sorted by date (newest first)
+        for date, cat, desc, amount in self.repo.get_recent_expenses(10):
+            self.recent_tree.insert('', 'end', values=(date, cat, desc[:30] + '...' if len(str(desc)) > 30 else desc,
+                                                       f"${amount:.2f}"))
 
     def _update_charts(self, categories):
         # Clear all axes
@@ -260,10 +266,17 @@ class DashboardWindow(tk.Toplevel):
         self.ax3.clear()
         self.ax4.clear()
 
-        # Chart 1: Category Pie Chart
+        # Chart 1: Category Pie Chart - Top 5 categories + Other
         if categories:
-            cat_names = [cat[0] for cat in categories]
-            cat_values = [cat[1] for cat in categories]
+            # Limit to top 5 categories, aggregate rest into "Other"
+            if len(categories) > 5:
+                top_5 = categories[:5]
+                other_total = sum(cat[1] for cat in categories[5:])
+                cat_names = [cat[0] for cat in top_5] + ['Other']
+                cat_values = [cat[1] for cat in top_5] + [other_total]
+            else:
+                cat_names = [cat[0] for cat in categories]
+                cat_values = [cat[1] for cat in categories]
 
             self.ax1.pie(cat_values, labels=cat_names, autopct='%1.1f%%', startangle=90)
             self.ax1.set_title('Spending by Category', fontweight='bold')
@@ -279,8 +292,8 @@ class DashboardWindow(tk.Toplevel):
             self.ax2.set_ylabel('Amount ($)')
             self.ax2.tick_params(axis='x', rotation=45)
 
-        # Chart 3: Monthly Trends
-        monthly_data = self.repo.get_monthly_spending()
+        # Chart 3: Monthly Trends - ordered chronologically (oldest to newest)
+        monthly_data = self.repo.get_monthly_spending_chronological()
         if monthly_data:
             months = [m[0] for m in monthly_data]
             values = [m[1] for m in monthly_data]

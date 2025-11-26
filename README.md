@@ -7,6 +7,25 @@ CCT211H5F – Project 2: Persistent Form
 
 ---
 
+## Project Description
+
+This project is a **Persistent Form Application** built using Python's Tkinter GUI toolkit. The application is an **Expense Tracker** that allows users to manage their personal finances through a graphical interface with full CRUD (Create, Read, Update, Delete) functionality.
+
+### Rubric Requirements Met
+
+| Requirement | Implementation |
+|-------------|----------------|
+| **Tkinter GUI** | Multi-window interface with main window, form dialogs, and dashboard |
+| **CRUD Functionality** | Full Create, Read, Update, Delete operations for expenses |
+| **Data Persistence** | SQLite database (`expenses.db`) for permanent storage |
+| **Form Validation** | Date format, required fields, and numeric amount validation |
+| **Multi-Window Design** | Main window, ExpenseForm (Toplevel), DashboardWindow (Toplevel) |
+| **User Experience** | Dropdown menus (Combobox) for Category and Payment Method |
+| **Data Visualization** | Charts and graphs in the Analytics dashboard |
+| **Error Handling** | Try-catch blocks, user-friendly error messages |
+
+---
+
 ## Overview  
 This application is a Tkinter-based **expense tracker** built for the final project of **CCT211H5F – Python Programming**.  
 It demonstrates:
@@ -17,8 +36,9 @@ It demonstrates:
 - Error handling and validation  
 - Object-oriented code organization  
 - Dashboard summary using a separate window  
+- Data visualization with matplotlib charts
 
-Users can add, edit, delete, and view expenses. The dashboard provides a quick summary of spending patterns.
+Users can add, edit, delete, and view expenses. The dashboard provides a quick summary of spending patterns with visual analytics.
 
 ---
 
@@ -29,6 +49,12 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 - Edit existing entries  
 - Delete entries  
 - View expenses in a table using `ttk.Treeview`
+
+### Form Input Controls
+- **Category Selection**: Dropdown (Combobox) with predefined options:
+  - Food, Transport, Shopping, Entertainment, Rent, Other
+- **Payment Method Selection**: Dropdown (Combobox) with predefined options:
+  - Credit Card, Debit Card, Cash, E-Transfer, Other
 
 ### Data Validation  
 - Required fields (date, category, amount)  
@@ -50,8 +76,14 @@ Users can add, edit, delete, and view expenses. The dashboard provides a quick s
 - Total amount spent  
 - Number of expenses  
 - Average expense  
-- Spending by category  
-- Top 5 largest expenses  
+- Spending by category (Top 5 + Other aggregation)
+- Recent activity list (sorted by date)
+
+### Analytics & Visualization
+- **Pie Chart**: Spending by category (Top 5 categories + "Other")
+- **Bar Chart**: Top spending categories
+- **Line Chart**: Monthly spending trend (chronologically ordered)
+- **Transaction Volume**: Number of transactions per category  
 
 ---
 

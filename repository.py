@@ -155,6 +155,21 @@ class ExpenseRepository:
             print(f"Error ensuring columns exist: {e}")
             conn.rollback()
 
+    def get_recent_expenses(self, limit=10):
+        """Fetch recent expenses sorted by date (newest first)."""
+        with self._get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT date, category, description, amount
+                FROM expenses
+                ORDER BY date DESC, id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            )
+            return cur.fetchall()
+
     def get_monthly_spending(self):
         with self._get_conn() as conn:
             cur = conn.cursor()
@@ -164,6 +179,21 @@ class ExpenseRepository:
                 FROM expenses
                 GROUP BY month
                 ORDER BY month DESC
+                LIMIT 12
+                """
+            )
+            return cur.fetchall()
+
+    def get_monthly_spending_chronological(self):
+        """Fetch monthly spending sorted chronologically (oldest to newest)."""
+        with self._get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT strftime('%Y-%m', date) as month, SUM(amount) as total
+                FROM expenses
+                GROUP BY month
+                ORDER BY month ASC
                 LIMIT 12
                 """
             )

@@ -293,7 +293,7 @@ class DashboardWindow(tk.Toplevel):
         monthly_data = self.repo.get_monthly_spending()
         if monthly_data:
             # Reverse to get chronological order (oldest first)
-            monthly_data_sorted = list(reversed(monthly_data))
+            monthly_data_sorted = monthly_data[::-1]
             months = [m[0] for m in monthly_data_sorted]
             values = [m[1] for m in monthly_data_sorted]
 

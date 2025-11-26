@@ -8,6 +8,10 @@ from datetime import datetime
 class ExpenseForm(tk.Toplevel):
     """Form window for adding or editing an expense."""
 
+    # Category and payment method options as class constants
+    CATEGORY_OPTIONS = ["Food", "Transport", "Shopping", "Entertainment", "Rent", "Other"]
+    PAYMENT_OPTIONS = ["Cash", "Credit Card", "Debit Card", "E-Transfer", "Other"]
+
     def __init__(self, master, repo, on_save, expense=None):
         super().__init__(master)
         self.title("Expense Form")
@@ -38,15 +42,10 @@ class ExpenseForm(tk.Toplevel):
         self.payment_var = tk.StringVar()
         self.tags_var = tk.StringVar()
 
-        # Category options
-        category_options = ["Food", "Transport", "Shopping", "Entertainment", "Rent", "Other"]
-        # Payment method options
-        payment_options = ["Cash", "Credit Card", "Debit Card", "E-Transfer", "Other"]
-
         tk.Entry(self, textvariable=self.date_var).grid(row=0, column=1, padx=5, pady=5)
         
         # Category Combobox
-        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=category_options)
+        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=self.CATEGORY_OPTIONS)
         self.category_combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.desc_text = tk.Text(self, width=30, height=4)
@@ -55,7 +54,7 @@ class ExpenseForm(tk.Toplevel):
         tk.Entry(self, textvariable=self.amount_var).grid(row=3, column=1, padx=5, pady=5)
         
         # Payment Method Combobox
-        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=payment_options)
+        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=self.PAYMENT_OPTIONS)
         self.payment_combo.grid(row=4, column=1, padx=5, pady=5)
 
         self.comments_text = tk.Text(self, width=30, height=3)

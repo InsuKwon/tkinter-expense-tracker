@@ -42,7 +42,7 @@ class ExpenseForm(tk.Toplevel):
 
         # Category combobox with predefined options
         category_options = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Rent', 'Other']
-        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=category_options)
+        self.category_combo = ttk.Combobox(self, textvariable=self.category_var, values=category_options, state='readonly')
         self.category_combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.desc_text = tk.Text(self, width=30, height=4)
@@ -52,7 +52,7 @@ class ExpenseForm(tk.Toplevel):
 
         # Payment Method combobox with predefined options
         payment_options = ['Cash', 'Credit Card', 'Debit Card']
-        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=payment_options)
+        self.payment_combo = ttk.Combobox(self, textvariable=self.payment_var, values=payment_options, state='readonly')
         self.payment_combo.grid(row=4, column=1, padx=5, pady=5)
 
         self.comments_text = tk.Text(self, width=30, height=3)

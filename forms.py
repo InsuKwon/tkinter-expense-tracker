@@ -94,12 +94,15 @@ class ExpenseForm(tk.Toplevel):
             self.amount_var.set(str(amount))
 
             # Handle payment method - if the value exists in options, select it; otherwise add it temporarily
-            if payment in self.payment_options:
-                self.payment_var.set(payment or "")
-            else:
+            if payment and payment in self.payment_options:
+                self.payment_var.set(payment)
+            elif payment:
                 # Add the existing payment method to options temporarily for editing
                 self.payment_combo['values'] = self.payment_options + [payment]
-                self.payment_var.set(payment or "")
+                self.payment_var.set(payment)
+            else:
+                # Payment is None or empty, don't set a value
+                self.payment_var.set("")
 
             self.comments_text.insert("1.0", comments or "")
             self.tags_var.set(tags or "")

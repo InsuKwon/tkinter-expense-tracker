@@ -7,6 +7,32 @@ CCT211H5F – Project 2: Persistent Form
 
 ---
 
+## Project Description
+
+A comprehensive **Tkinter-based expense tracker application** designed to help users manage and analyze their personal finances. This project demonstrates practical implementation of GUI programming, database persistence, and data visualization using Python.
+
+---
+
+## Rubric / Assignment Details
+
+### Functionality (10 pts)
+- **Features**: Complete CRUD operations (Create, Read, Update, Delete) for expense management
+- **Bugs**: Extensively tested for edge cases including invalid inputs, date validation, and data integrity
+- **Comparison to Proposal**: Meets and exceeds initial project requirements with additional analytics dashboard
+
+### GUI (10 pts)
+- **Widget Usage**: Utilizes various Tkinter widgets including `ttk.Treeview`, `ttk.Combobox`, `tk.Entry`, `tk.Text`, and `tk.Button`
+- **Visual Hierarchy**: Clear organization with tabs, labeled sections, and color-coded summary cards
+- **Error Prevention**: Input validation for dates, numeric amounts, and required fields with user-friendly error messages
+
+### Code Quality (5 pts)
+- **Organization**: Modular structure with separate files for main app, forms, dashboard, and repository
+- **PEP8**: Follows Python style guidelines for naming conventions and code formatting
+- **Comments**: Docstrings and inline comments for code documentation
+- **OO Practices**: Object-oriented design with inheritance (`tk.Toplevel`, `tk.Tk`) and encapsulation
+
+---
+
 ## Overview  
 This application is a Tkinter-based **expense tracker** built for the final project of **CCT211H5F – Python Programming**.  
 It demonstrates:

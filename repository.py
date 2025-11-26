@@ -133,6 +133,21 @@ class ExpenseRepository:
             )
             return cur.fetchall()
 
+    def get_recent_expenses(self, limit=10):
+        """Get most recent expenses sorted by date DESC."""
+        with self._get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT date, category, description, amount
+                FROM expenses
+                ORDER BY date DESC, id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            )
+            return cur.fetchall()
+
     def _ensure_columns_exist(self, conn):
         """Ensure that user_comments and tags columns exist (for backward compatibility)."""
         cursor = conn.cursor()

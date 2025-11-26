@@ -37,7 +37,7 @@ class ExpenseApp(tk.Tk):
         tk.Button(toolbar, text="Delete", command=self.delete).pack(side="left", padx=3)
         tk.Button(toolbar, text="Dashboard", command=self.open_dashboard).pack(side="left", padx=3)
 
-        cols = ("id", "date", "category", "description", "amount", "payment_method")
+        cols = ("id", "date", "category", "description", "amount", "payment_method", "comments", "tags")
         self.tree = ttk.Treeview(self, columns=cols, show="headings")
         for c in cols:
             self.tree.heading(c, text=c.capitalize())
@@ -48,6 +48,9 @@ class ExpenseApp(tk.Tk):
         for row in self.tree.get_children():
             self.tree.delete(row)
         for exp in self.repo.get_all():
+            # Handle the case where old records might not have comments/tags
+            if len(exp) < 8:
+                exp = exp + (None, None)  # Add None for comments and tags
             self.tree.insert("", "end", values=exp)
 
     def selected(self):
@@ -55,6 +58,9 @@ class ExpenseApp(tk.Tk):
         if not sel:
             return None
         vals = self.tree.item(sel[0], "values")
+        # Ensure we have all 8 fields
+        while len(vals) < 8:
+            vals = vals + (None,)
         return (int(vals[0]), *vals[1:])
 
     def add(self):

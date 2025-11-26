@@ -29,11 +29,14 @@ class ExpenseForm(tk.Toplevel):
         tk.Label(self, text="Description / Notes:").grid(row=2, column=0, sticky="ne", padx=5, pady=5)
         tk.Label(self, text="Amount:").grid(row=3, column=0, sticky="e", padx=5, pady=5)
         tk.Label(self, text="Payment Method:").grid(row=4, column=0, sticky="e", padx=5, pady=5)
+        tk.Label(self, text="User Comments:").grid(row=5, column=0, sticky="ne", padx=5, pady=5)
+        tk.Label(self, text="Tags (comma-separated):").grid(row=6, column=0, sticky="e", padx=5, pady=5)
 
         self.date_var = tk.StringVar()
         self.category_var = tk.StringVar()
         self.amount_var = tk.StringVar()
         self.payment_var = tk.StringVar()
+        self.tags_var = tk.StringVar()
 
         tk.Entry(self, textvariable=self.date_var).grid(row=0, column=1, padx=5, pady=5)
         tk.Entry(self, textvariable=self.category_var).grid(row=1, column=1, padx=5, pady=5)
@@ -44,20 +47,35 @@ class ExpenseForm(tk.Toplevel):
         tk.Entry(self, textvariable=self.amount_var).grid(row=3, column=1, padx=5, pady=5)
         tk.Entry(self, textvariable=self.payment_var).grid(row=4, column=1, padx=5, pady=5)
 
+        self.comments_text = tk.Text(self, width=30, height=3)
+        self.comments_text.grid(row=5, column=1, padx=5, pady=5)
+
+        tk.Entry(self, textvariable=self.tags_var).grid(row=6, column=1, padx=5, pady=5)
+
         btn_frame = tk.Frame(self)
-        btn_frame.grid(row=5, column=0, columnspan=2, pady=10)
+        btn_frame.grid(row=7, column=0, columnspan=2, pady=10)
 
         tk.Button(btn_frame, text="Save", command=self._on_save).pack(side="left", padx=5)
         tk.Button(btn_frame, text="Cancel", command=self.destroy).pack(side="left", padx=5)
 
     def _populate_fields(self):
         if self.expense:
-            _, date, category, description, amount, payment = self.expense
+            # Handle both old (6 fields) and new (8 fields) database records
+            if len(self.expense) >= 8:
+                _, date, category, description, amount, payment, comments, tags = self.expense
+            else:
+                # Old database record - pad with None values
+                _, date, category, description, amount, payment = self.expense
+                comments = None
+                tags = None
+
             self.date_var.set(date)
             self.category_var.set(category)
             self.desc_text.insert("1.0", description or "")
             self.amount_var.set(str(amount))
             self.payment_var.set(payment or "")
+            self.comments_text.insert("1.0", comments or "")
+            self.tags_var.set(tags or "")
         else:
             self.date_var.set(datetime.today().strftime("%Y-%m-%d"))
 
@@ -67,6 +85,8 @@ class ExpenseForm(tk.Toplevel):
         description = self.desc_text.get("1.0", "end").strip()
         amount_str = self.amount_var.get().strip()
         payment = self.payment_var.get().strip()
+        comments = self.comments_text.get("1.0", "end").strip()
+        tags = self.tags_var.get().strip()
 
         if not date or not category or not amount_str:
             messagebox.showerror("Error", "Date, category, and amount are required.")
@@ -85,9 +105,9 @@ class ExpenseForm(tk.Toplevel):
             return
 
         if self.expense:
-            self.repo.update(self.expense[0], date, category, description, amount, payment)
+            self.repo.update(self.expense[0], date, category, description, amount, payment, comments, tags)
         else:
-            self.repo.insert(date, category, description, amount, payment)
+            self.repo.insert(date, category, description, amount, payment, comments, tags)
 
         self.on_save()
         self.destroy()

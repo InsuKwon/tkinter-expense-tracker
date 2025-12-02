@@ -7,6 +7,11 @@ CCT211H5F – Project 2: Persistent Form
 
 ---
 
+**Note on AI Assistance (Post-Deadline Work)**  
+This repository contains a few GitHub Copilot–tagged commits made *after* the official due date (Nov 25). These were experiments for UI refinement and were not part of the submitted work.  
+The project submitted for grading was created and implemented by our group, and all core functionality, code structure, and implementation decisions were done manually before the deadline.
+
+
 ## Overview  
 This application is a Tkinter-based **expense tracker** built for the final project of **CCT211H5F – Python Programming**.  
 It demonstrates:
